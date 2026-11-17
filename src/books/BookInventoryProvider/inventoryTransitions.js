@@ -4,14 +4,10 @@ function normalizeText(value) {
 
 function bookKey(book) {
   return [
-    normalizeText(book.name),
-    normalizeText(book.brand),
-    normalizeText(book.productType),
+    normalizeText(book.title),
+    normalizeText(book.author),
+    normalizeText(book.category),
   ].join('\n');
-}
-
-function withQuantity(book, quantity) {
-  return { ...book, quantity };
 }
 
 function hasCartLine(cartLines, bookId) {
@@ -45,12 +41,12 @@ function removeOneFromLine(cartLines, bookId) {
     });
 }
 
-function changeBookQuantity(books, bookId, difference) {
-  return books.map(function changeQuantity(book) {
+function changeBookStock(books, bookId, difference) {
+  return books.map(function changeStock(book) {
     if (book.id !== bookId) {
       return book;
     }
-    return withQuantity(book, book.quantity + difference);
+    return { ...book, stock: book.stock + difference };
   });
 }
 
@@ -66,6 +62,16 @@ export function countCartUnits(cartLines) {
   }, 0);
 }
 
+export function calculateCartTotal(books, cartLines) {
+  return cartLines.reduce(function sumPrices(total, line) {
+    const book = findBook(books, line.bookId);
+    if (!book) {
+      return total;
+    }
+    return total + book.price * line.quantity;
+  }, 0);
+}
+
 export function registerBook(state, book) {
   const key = bookKey(book);
   const match = state.books.find(function sameBook(current) {
@@ -74,17 +80,18 @@ export function registerBook(state, book) {
   if (match) {
     return {
       ...state,
-      books: changeBookQuantity(state.books, match.id, book.quantity),
+      books: changeBookStock(state.books, match.id, book.stock),
     };
   }
   return {
     ...state,
     books: state.books.concat({
       id: book.id,
-      name: book.name,
-      brand: book.brand,
-      productType: book.productType,
-      quantity: book.quantity,
+      title: book.title.trim(),
+      author: book.author.trim(),
+      category: book.category,
+      price: book.price,
+      stock: book.stock,
     }),
   };
 }
@@ -103,12 +110,12 @@ export function deleteBook(state, bookId) {
 
 export function addUnitToCart(state, bookId) {
   const book = findBook(state.books, bookId);
-  if (!book || book.quantity < 1) {
+  if (!book || book.stock < 1) {
     return state;
   }
   return {
     ...state,
-    books: changeBookQuantity(state.books, bookId, -1),
+    books: changeBookStock(state.books, bookId, -1),
     cartLines: addOneToLine(state.cartLines, bookId),
   };
 }
@@ -119,7 +126,7 @@ export function removeUnitFromCart(state, bookId) {
   }
   return {
     ...state,
-    books: changeBookQuantity(state.books, bookId, 1),
+    books: changeBookStock(state.books, bookId, 1),
     cartLines: removeOneFromLine(state.cartLines, bookId),
   };
 }

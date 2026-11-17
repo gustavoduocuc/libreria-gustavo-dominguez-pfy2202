@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from 'react';
-import { defaultBooks } from '../defaultBooks';
+import { seedBooks } from '../../data';
 import * as transitions from './inventoryTransitions';
 
 const BookInventoryContext = createContext(null);
 
 export function BookInventoryProvider(props) {
-  const [state, setState] = useState({ books: defaultBooks, cartLines: [] });
+  const [state, setState] = useState({ books: seedBooks, cartLines: [] });
 
   function addBook(book) {
     const bookWithId = { ...book, id: crypto.randomUUID() };
@@ -35,7 +35,8 @@ export function BookInventoryProvider(props) {
   const inventory = {
     books: state.books,
     cartLines: state.cartLines,
-    cartStockCount: transitions.countCartUnits(state.cartLines),
+    cartUnitCount: transitions.countCartUnits(state.cartLines),
+    cartTotal: transitions.calculateCartTotal(state.books, state.cartLines),
     addBook,
     removeBook,
     addUnitToCart,
