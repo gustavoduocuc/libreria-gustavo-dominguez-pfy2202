@@ -8,7 +8,7 @@ const linkBaseClass = `flex min-h-11 flex-auto items-center justify-center gap-1
 const linkCurrentClass = `${linkBaseClass} bg-accent-soft font-semibold text-accent`;
 const linkOtherClass = `${linkBaseClass} text-muted hover:bg-background hover:text-text`;
 const badgeClass =
-  'rounded-pill bg-accent px-1.5 text-sm font-bold leading-normal text-surface';
+  'rounded-pill bg-highlight px-1.5 text-sm font-bold leading-normal text-surface';
 
 function sectionLinkClass(state) {
   if (state.isActive) {
@@ -34,12 +34,12 @@ export function SectionMenu() {
       </NavLink>
       <NavLink className={sectionLinkClass} to="/carrito">
         Carrito
-        {inventory.cartStockCount > 0 && (
-          <span className={badgeClass}>{inventory.cartStockCount}</span>
+        {inventory.cartUnitCount > 0 && (
+          <span className={badgeClass}>{inventory.cartUnitCount}</span>
         )}
       </NavLink>
-      <NavLink className={sectionLinkClass} to="/gestion-articulos">
-        Gestión de artículos
+      <NavLink className={sectionLinkClass} to="/gestion-libros">
+        Gestión de libros
       </NavLink>
     </nav>
   );

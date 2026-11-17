@@ -9,7 +9,7 @@ async function goTo(router, path) {
 }
 
 async function addUnits(router, bookId, units) {
-  await goTo(router, `/articulos/${bookId}`);
+  await goTo(router, `/libros/${bookId}`);
   for (let unit = 0; unit < units; unit += 1) {
     userEvent.click(await screen.findByRole('button', { name: 'Agregar al carrito' }));
   }
@@ -30,7 +30,7 @@ test('the menu has five destinations in order', async () => {
     'Quiénes somos',
     'Contáctanos',
     'Carrito',
-    'Gestión de artículos',
+    'Gestión de libros',
   ]);
 });
 
@@ -54,14 +54,14 @@ test('the cart destination shows the total units only when there are some', asyn
 
   expect(within(menu).getByRole('link', { name: 'Carrito' })).toBeInTheDocument();
 
-  await addUnits(router, 'leche', 2);
-  await addUnits(router, 'pan', 3);
+  await addUnits(router, 'dune', 2);
+  await addUnits(router, 'el-hobbit', 3);
 
   expect(within(menu).getByRole('link', { name: 'Carrito 5' })).toBeInTheDocument();
 });
 
-test('an address with an book segment but no id shows the not found notice', async () => {
-  renderAt('/articulos');
+test('an address with a book segment but no id shows the not found notice', async () => {
+  renderAt('/libros');
 
   expect(
     await screen.findByRole('heading', { level: 1, name: 'Página no encontrada' })
