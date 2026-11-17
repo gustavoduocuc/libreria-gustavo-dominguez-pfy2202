@@ -1,13 +1,7 @@
+import { categories } from './categories';
+
 export const allCategories = 'Todas';
 
-export const bookCategories = [
-  'Ficción',
-  'Ciencia Ficción',
-  'Fantasía',
-  'Misterio y Suspenso',
-  'Romance',
-  'Historia',
-  'Ciencia y Tecnología',
-  'Infantil y Juvenil',
-  'Poesía',
-];
+export const bookCategories = categories.map(function readName(category) {
+  return category.name;
+});
