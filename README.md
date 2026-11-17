@@ -21,6 +21,7 @@ Tienda de libros. Muestra un catálogo de libros por categoría, el detalle de c
 | `/quienes-somos`, `/contacto` | Información de la librería |
 | `/gestion-libros/agregar-libro` | Formulario para agregar un libro |
 | `/gestion-libros/inventario-libros` | Tabla de libros con eliminación |
+| cualquier otra | Página 404 |
 
 ## Requisitos
 
@@ -31,7 +32,7 @@ Tienda de libros. Muestra un catálogo de libros por categoría, el detalle de c
 
 ```bash
 npm ci          # instala las dependencias
-npm start       # servidor de desarrollo en http://localhost:3000
+npm start       # servidor de desarrollo en http://localhost:3000/libreria-gustavo-dominguez-pfy2202/
 npm test        # pruebas en modo interactivo
 npm run build   # build de producción en la carpeta build/
 ```
@@ -66,6 +67,22 @@ type Mutation { addBook(input: AddBookInput!): Book!  deleteBook(id: ID!): Book!
 - **Errores simulados (solo en desarrollo):** `books(category: "error-500")`, `addBook` con título `error-500`, o `localStorage.mockFailOperation = "<Operación>"` (por ejemplo `Books` o `DeleteBook`). En el build publicado se ignoran.
 - `npm start` sirve la app bajo `/libreria-gustavo-dominguez-pfy2202/` (por el campo `homepage`).
 
+## Capturas
+
+| Inicio | Categorías |
+|---|---|
+| ![Inicio](docs/screenshots/01-inicio.png) | ![Categorías](docs/screenshots/02-categorias.png) |
+
+| Categoría sin libros | Error de la API |
+|---|---|
+| ![Categoría vacía](docs/screenshots/03-categoria-vacia.png) | ![Error de la API](docs/screenshots/04-categoria-error.png) |
+
+![Carrito](docs/screenshots/05-carrito.png)
+
 ## Publicación
 
 El sitio se publica en [https://gustavoduocuc.github.io/libreria-gustavo-dominguez-pfy2202](https://gustavoduocuc.github.io/libreria-gustavo-dominguez-pfy2202).
+
+- El workflow `.github/workflows/deploy.yml` corre en cada push a `main` (o a mano desde la pestaña Actions): instala, prueba, construye con `PUBLIC_URL=/libreria-gustavo-dominguez-pfy2202` y publica `build/` en la rama `gh-pages`.
+- En Settings → Pages la fuente debe ser **Deploy from a branch → `gh-pages` / `(root)`**.
+- `postbuild` copia `index.html` a `404.html` para que las rutas profundas (por ejemplo `/categorias/ficcion`) funcionen al refrescar; GitHub Pages las responde con código 404 pero la app se muestra.

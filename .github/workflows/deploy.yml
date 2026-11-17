@@ -2,7 +2,8 @@ name: Publicar sitio
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
