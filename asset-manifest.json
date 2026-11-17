@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/libreria-gustavo-dominguez-pfy2202/static/css/main.03ac4855.css",
+    "main.js": "/libreria-gustavo-dominguez-pfy2202/static/js/main.bb41a46f.js",
+    "static/js/39.02edec6e.chunk.js": "/libreria-gustavo-dominguez-pfy2202/static/js/39.02edec6e.chunk.js",
+    "static/js/453.ce9ac344.chunk.js": "/libreria-gustavo-dominguez-pfy2202/static/js/453.ce9ac344.chunk.js",
+    "static/js/502.0160453a.chunk.js": "/libreria-gustavo-dominguez-pfy2202/static/js/502.0160453a.chunk.js",
+    "static/js/966.d070be33.chunk.js": "/libreria-gustavo-dominguez-pfy2202/static/js/966.d070be33.chunk.js",
+    "index.html": "/libreria-gustavo-dominguez-pfy2202/index.html",
+    "main.03ac4855.css.map": "/libreria-gustavo-dominguez-pfy2202/static/css/main.03ac4855.css.map",
+    "main.bb41a46f.js.map": "/libreria-gustavo-dominguez-pfy2202/static/js/main.bb41a46f.js.map",
+    "39.02edec6e.chunk.js.map": "/libreria-gustavo-dominguez-pfy2202/static/js/39.02edec6e.chunk.js.map",
+    "453.ce9ac344.chunk.js.map": "/libreria-gustavo-dominguez-pfy2202/static/js/453.ce9ac344.chunk.js.map",
+    "502.0160453a.chunk.js.map": "/libreria-gustavo-dominguez-pfy2202/static/js/502.0160453a.chunk.js.map",
+    "966.d070be33.chunk.js.map": "/libreria-gustavo-dominguez-pfy2202/static/js/966.d070be33.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.03ac4855.css",
+    "static/js/main.bb41a46f.js"
+  ]
+}
