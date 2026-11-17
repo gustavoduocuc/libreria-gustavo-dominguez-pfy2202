@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { allCategories } from '../../books/productTypes';
+import { allCategories } from '../../data';
 import { filterByCategory } from '../filterByCategory';
 
 export function useCategoryFilter(books) {

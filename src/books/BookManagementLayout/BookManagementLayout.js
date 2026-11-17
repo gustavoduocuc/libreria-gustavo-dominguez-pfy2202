@@ -6,7 +6,7 @@ const currentLinkClass = `${baseLinkClass} bg-accent-soft font-semibold text-acc
 const otherLinkClass = `${baseLinkClass} text-muted hover:bg-surface hover:text-text`;
 
 export function BookManagementIndex() {
-  return <Navigate to="inventario-articulos" replace />;
+  return <Navigate to="inventario-libros" replace />;
 }
 
 function bookLinkClass(state) {
@@ -19,12 +19,12 @@ function bookLinkClass(state) {
 export function BookManagementLayout() {
   return (
     <>
-      <nav aria-label="Gestión de artículos" className="mb-section flex flex-wrap gap-2">
-        <NavLink className={bookLinkClass} to="agregar-articulo">
-          Agregar artículo
+      <nav aria-label="Gestión de libros" className="mb-section flex flex-wrap gap-2">
+        <NavLink className={bookLinkClass} to="agregar-libro">
+          Agregar libro
         </NavLink>
-        <NavLink className={bookLinkClass} to="inventario-articulos">
-          Inventario de artículos
+        <NavLink className={bookLinkClass} to="inventario-libros">
+          Inventario de libros
         </NavLink>
       </nav>
       <Outlet />

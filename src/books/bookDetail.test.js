@@ -2,77 +2,68 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderAt } from '../testing/renderAt';
 
-test('the table name links to the book detail', async () => {
-  renderAt('/gestion-articulos/inventario-articulos');
+test('the table title links to the book detail', async () => {
+  renderAt('/gestion-libros/inventario-libros');
 
-  const row = await screen.findByRole('row', { name: /Leche entera 1 L/ });
+  const row = await screen.findByRole('row', { name: /Dune/ });
 
-  expect(within(row).getByRole('link', { name: 'Leche entera 1 L' })).toHaveAttribute(
+  expect(within(row).getByRole('link', { name: 'Dune' })).toHaveAttribute('href', '/libros/dune');
+});
+
+test('the home title links to the book detail', async () => {
+  renderAt('/');
+
+  expect(await screen.findByRole('link', { name: 'Dune' })).toHaveAttribute(
     'href',
-    '/articulos/leche'
+    '/libros/dune'
   );
 });
 
-test('the home name links to the book detail', async () => {
+test('clicking a title opens the detail of that book', async () => {
   renderAt('/');
 
-  expect(await screen.findByRole('link', { name: 'Leche entera 1 L' })).toHaveAttribute(
-    'href',
-    '/articulos/leche'
-  );
+  userEvent.click(await screen.findByRole('link', { name: 'Dune' }));
+
+  expect(await screen.findByRole('heading', { level: 1, name: 'Dune' })).toBeInTheDocument();
 });
 
-test('clicking a name opens the detail of that book', async () => {
-  renderAt('/');
+test('the detail shows title, author, category, price and units', async () => {
+  renderAt('/libros/dune');
 
-  userEvent.click(await screen.findByRole('link', { name: 'Leche entera 1 L' }));
-
-  expect(
-    await screen.findByRole('heading', { level: 1, name: 'Leche entera 1 L' })
-  ).toBeInTheDocument();
-});
-
-test('the detail shows name, brand, type and units', async () => {
-  renderAt('/articulos/leche');
-
-  expect(
-    await screen.findByRole('heading', { level: 1, name: 'Leche entera 1 L' })
-  ).toBeInTheDocument();
-  expect(screen.getByText('Colún')).toBeInTheDocument();
-  expect(screen.getByText('Lácteos')).toBeInTheDocument();
-  expect(screen.getByText('24 unidades')).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { level: 1, name: 'Dune' })).toBeInTheDocument();
+  expect(screen.getAllByText('Frank Herbert').length).toBeGreaterThan(0);
+  expect(screen.getByText('Ciencia Ficción')).toBeInTheDocument();
+  expect(screen.getByText('$15.990')).toBeInTheDocument();
+  expect(screen.getByText('9 unidades')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Agregar al carrito' })).toBeEnabled();
 });
 
-test('adding to the cart takes one unit from the inventory', async () => {
-  renderAt('/articulos/leche');
+test('adding to the cart takes one unit from the stock', async () => {
+  renderAt('/libros/dune');
 
   userEvent.click(await screen.findByRole('button', { name: 'Agregar al carrito' }));
 
-  expect(screen.getByText('23 unidades')).toBeInTheDocument();
+  expect(screen.getByText('8 unidades')).toBeInTheDocument();
 
   userEvent.click(screen.getByRole('button', { name: 'Agregar al carrito' }));
 
-  expect(screen.getByText('22 unidades')).toBeInTheDocument();
+  expect(screen.getByText('7 unidades')).toBeInTheDocument();
 });
 
-test('an book without stock shows a disabled Agotado button', async () => {
-  renderAt('/articulos/detergente');
+test('a book without stock shows a disabled Agotado button', async () => {
+  renderAt('/libros/matilda');
 
-  await screen.findByRole('button', { name: 'Agregar al carrito' });
-  for (let unit = 0; unit < 7; unit += 1) {
-    userEvent.click(screen.getByRole('button', { name: 'Agregar al carrito' }));
-  }
+  userEvent.click(await screen.findByRole('button', { name: 'Agregar al carrito' }));
 
   expect(screen.getByText('0 unidades')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Agotado' })).toBeDisabled();
 });
 
 test('an unknown book shows a notice, a link home and the menu', async () => {
-  renderAt('/articulos/xyz');
+  renderAt('/libros/xyz');
 
   expect(
-    await screen.findByRole('heading', { level: 1, name: 'Artículo no encontrado' })
+    await screen.findByRole('heading', { level: 1, name: 'Libro no encontrado' })
   ).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Volver a Inicio' })).toHaveAttribute('href', '/');
   expect(screen.getByRole('navigation', { name: 'Secciones' })).toBeInTheDocument();

@@ -11,7 +11,7 @@ export function BookInventoryPage() {
 
   return (
     <section className="flex flex-col gap-section">
-      <PageTitle>Inventario de artículos</PageTitle>
+      <PageTitle>Inventario de libros</PageTitle>
       <CategoryFilter category={filter.category} onSelect={filter.selectCategory} />
       {filter.visibleBooks.length === 0 ? (
         <NoBooksMessage />

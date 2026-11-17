@@ -1,5 +1,7 @@
+import { BookCover } from '../../books/BookCover/BookCover';
 import { BookLink } from '../../books/BookLink/BookLink';
-import { CategoryTile } from '../../books/CategoryTile/CategoryTile';
+import { Price } from '../../books/Price/Price';
+import { formatPrice } from '../../books/formatPrice';
 import { Card } from '../../ui/Card/Card';
 import { QuantityButton } from '../QuantityButton/QuantityButton';
 
@@ -17,11 +19,16 @@ export function CartLine(props) {
   return (
     <Card as="li" className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:gap-4">
       <div className="flex items-center gap-3 md:flex-1">
-        <CategoryTile productType={book.productType} size="small" />
+        <div className="shrink-0">
+          <BookCover book={book} size="small" />
+        </div>
         <div className="flex flex-col">
           <BookLink book={book} />
           <span className="text-sm text-muted">
-            {book.brand} · {book.productType}
+            {book.author} · {book.category}
+          </span>
+          <span className="text-sm text-muted">
+            <Price value={book.price} /> c/u
           </span>
         </div>
       </div>
@@ -33,11 +40,14 @@ export function CartLine(props) {
         <QuantityButton
           action="Aumentar"
           book={book}
-          disabled={book.quantity < 1}
+          disabled={book.stock < 1}
           symbol="+"
           onClick={increase}
         />
       </div>
+      <p className="whitespace-nowrap text-base font-semibold md:min-w-28 md:text-right">
+        {`Subtotal: ${formatPrice(book.price * props.quantity)}`}
+      </p>
     </Card>
   );
 }

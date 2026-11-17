@@ -1,22 +1,28 @@
+import { BookCover } from '../../books/BookCover/BookCover';
 import { BookLink } from '../../books/BookLink/BookLink';
 import { CategoryChip } from '../../books/CategoryChip/CategoryChip';
-import { CategoryTile } from '../../books/CategoryTile/CategoryTile';
+import { Price } from '../../books/Price/Price';
 import { StockCount } from '../../books/StockCount/StockCount';
 import { Card } from '../../ui/Card/Card';
 
 export function BookCard(props) {
   return (
     <Card as="li" className="flex flex-col gap-3 p-4">
-      <CategoryTile productType={props.book.productType} />
+      <div className="mx-auto w-full max-w-48">
+        <BookCover book={props.book} />
+      </div>
       <div className="flex flex-col">
-        <p className="text-lg font-semibold leading-snug">
+        <p className="font-serif text-lg font-bold leading-snug">
           <BookLink book={props.book} />
         </p>
-        <p className="text-sm text-muted">{props.book.brand}</p>
+        <p className="text-sm text-muted">{props.book.author}</p>
       </div>
-      <div className="mt-auto flex items-center justify-between gap-2">
-        <CategoryChip productType={props.book.productType} />
-        <StockCount quantity={props.book.quantity} />
+      <div className="flex items-center justify-between gap-2">
+        <CategoryChip category={props.book.category} />
+        <Price value={props.book.price} />
+      </div>
+      <div className="mt-auto">
+        <StockCount stock={props.book.stock} />
       </div>
     </Card>
   );

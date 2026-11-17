@@ -1,7 +1,8 @@
 import { Button } from '../../ui/Button/Button';
 import { BookLink } from '../BookLink/BookLink';
-import { bodyCellClass, stickyCellClass } from '../tableCellClass';
+import { Price } from '../Price/Price';
 import { StockCount } from '../StockCount/StockCount';
+import { bodyCellClass, stickyCellClass } from '../tableCellClass';
 
 export function BookRow(props) {
   function removeRow() {
@@ -13,17 +14,16 @@ export function BookRow(props) {
       <td className={`${bodyCellClass} ${stickyCellClass}`}>
         <BookLink book={props.book} />
       </td>
-      <td className={bodyCellClass}>{props.book.brand}</td>
-      <td className={bodyCellClass}>{props.book.productType}</td>
+      <td className={bodyCellClass}>{props.book.author}</td>
+      <td className={bodyCellClass}>{props.book.category}</td>
       <td className={bodyCellClass}>
-        <StockCount quantity={props.book.quantity} />
+        <Price value={props.book.price} />
       </td>
       <td className={bodyCellClass}>
-        <Button
-          ariaLabel={`Eliminar ${props.book.name}`}
-          variant="danger"
-          onClick={removeRow}
-        >
+        <StockCount stock={props.book.stock} />
+      </td>
+      <td className={bodyCellClass}>
+        <Button ariaLabel={`Eliminar ${props.book.title}`} variant="danger" onClick={removeRow}>
           Eliminar
         </Button>
       </td>

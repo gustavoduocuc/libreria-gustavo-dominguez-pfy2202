@@ -6,7 +6,5 @@ const sizeClasses = {
 };
 
 export function StockCount(props) {
-  return (
-    <span className={sizeClasses[props.size ?? 'normal']}>{props.quantity} unidades</span>
-  );
+  return <span className={sizeClasses[props.size ?? 'normal']}>{props.stock} unidades</span>;
 }

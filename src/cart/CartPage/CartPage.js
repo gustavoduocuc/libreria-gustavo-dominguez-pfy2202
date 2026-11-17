@@ -1,6 +1,7 @@
 import { useBookInventory } from '../../books/BookInventoryProvider/BookInventoryProvider';
 import { findBook } from '../../books/BookInventoryProvider/inventoryTransitions';
 import { StockCount } from '../../books/StockCount/StockCount';
+import { Price } from '../../books/Price/Price';
 import { Card } from '../../ui/Card/Card';
 import { EmptyState } from '../../ui/EmptyState/EmptyState';
 import { PageTitle } from '../../ui/PageTitle/PageTitle';
@@ -15,7 +16,7 @@ export function CartPage() {
       <PageTitle>Carrito</PageTitle>
       {inventory.cartLines.length === 0 ? (
         <EmptyState message="Tu carrito está vacío.">
-          <TextLink to="/">Ver artículos</TextLink>
+          <TextLink to="/">Ver libros</TextLink>
         </EmptyState>
       ) : (
         <div className="flex flex-col gap-section lg:flex-row lg:items-start">
@@ -32,8 +33,11 @@ export function CartPage() {
               );
             })}
           </ul>
-          <Card as="aside" className="p-4 lg:sticky lg:top-24 lg:w-72">
-            <StockCount quantity={inventory.cartStockCount} size="large" />
+          <Card as="aside" className="flex flex-col gap-2 p-4 lg:sticky lg:top-24 lg:w-72">
+            <StockCount size="large" stock={inventory.cartUnitCount} />
+            <p className="text-sm text-muted">
+              Total: <Price size="large" value={inventory.cartTotal} />
+            </p>
           </Card>
         </div>
       )}

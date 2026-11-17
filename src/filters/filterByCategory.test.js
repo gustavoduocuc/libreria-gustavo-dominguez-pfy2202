@@ -1,10 +1,10 @@
-import { allCategories, productTypes } from '../books/productTypes';
+import { allCategories, bookCategories } from '../data';
 import { filterByCategory } from './filterByCategory';
 
 const books = [
-  { id: 'leche', productType: 'Lácteos' },
-  { id: 'pan', productType: 'Panadería' },
-  { id: 'queso', productType: 'Lácteos' },
+  { id: 'hobbit', category: 'Fantasía' },
+  { id: 'orgullo', category: 'Romance' },
+  { id: 'dune-fantasy', category: 'Fantasía' },
 ];
 
 test('Todas keeps every book', () => {
@@ -12,26 +12,26 @@ test('Todas keeps every book', () => {
 });
 
 test('a category keeps only its books', () => {
-  const visible = filterByCategory(books, 'Lácteos');
+  const visible = filterByCategory(books, 'Fantasía');
 
   expect(visible.map(function readId(book) { return book.id; })).toEqual([
-    'leche',
-    'queso',
+    'hobbit',
+    'dune-fantasy',
   ]);
 });
 
 test('a category without books gives an empty list', () => {
-  expect(filterByCategory(books, 'Carnes')).toEqual([]);
+  expect(filterByCategory(books, 'Poesía')).toEqual([]);
 });
 
 test('filtering leaves the original list untouched', () => {
   const copy = books.slice();
 
-  filterByCategory(books, 'Lácteos');
+  filterByCategory(books, 'Fantasía');
 
   expect(books).toEqual(copy);
 });
 
-test('there are ten closed categories', () => {
-  expect(productTypes).toHaveLength(10);
+test('there are nine closed categories', () => {
+  expect(bookCategories).toHaveLength(9);
 });

@@ -11,7 +11,7 @@ export function HomePage() {
 
   return (
     <section className="flex flex-col gap-section">
-      <PageTitle>Artículos</PageTitle>
+      <PageTitle>Libros</PageTitle>
       <CategoryFilter category={filter.category} onSelect={filter.selectCategory} />
       {filter.visibleBooks.length === 0 ? (
         <NoBooksMessage />

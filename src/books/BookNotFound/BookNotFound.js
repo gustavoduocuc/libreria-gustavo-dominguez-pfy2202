@@ -5,8 +5,8 @@ import { TextLink } from '../../ui/TextLink/TextLink';
 export function BookNotFound() {
   return (
     <section className="flex flex-col gap-section">
-      <PageTitle>Artículo no encontrado</PageTitle>
-      <EmptyState message="El artículo que buscas no existe.">
+      <PageTitle>Libro no encontrado</PageTitle>
+      <EmptyState message="El libro que buscas no existe.">
         <TextLink to="/">Volver a Inicio</TextLink>
       </EmptyState>
     </section>
