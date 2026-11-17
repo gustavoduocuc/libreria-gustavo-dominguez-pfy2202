@@ -1,11 +1,11 @@
 import { Card } from '../../ui/Card/Card';
 import { focusRingClass } from '../../ui/focusRing';
-import { ArticleRow } from '../ArticleRow/ArticleRow';
+import { BookRow } from '../BookRow/BookRow';
 import { headerCellClass, stickyCellClass } from '../tableCellClass';
 
 const regionClass = `overflow-x-auto rounded-card ${focusRingClass}`;
 
-export function ArticleTable(props) {
+export function BookTable(props) {
   return (
     <Card>
       <div
@@ -35,9 +35,9 @@ export function ArticleTable(props) {
             </tr>
           </thead>
           <tbody>
-            {props.articles.map(function renderArticle(article) {
+            {props.books.map(function renderBook(book) {
               return (
-                <ArticleRow key={article.id} article={article} onRemove={props.onRemove} />
+                <BookRow key={book.id} book={book} onRemove={props.onRemove} />
               );
             })}
           </tbody>

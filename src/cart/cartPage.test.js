@@ -8,8 +8,8 @@ async function goTo(router, path) {
   });
 }
 
-async function addUnits(router, articleId, units) {
-  await goTo(router, `/articulos/${articleId}`);
+async function addUnits(router, bookId, units) {
+  await goTo(router, `/articulos/${bookId}`);
   for (let unit = 0; unit < units; unit += 1) {
     userEvent.click(await screen.findByRole('button', { name: 'Agregar al carrito' }));
   }
@@ -89,7 +89,7 @@ test('a line disappears when its quantity reaches zero', async () => {
   expect(await screen.findByText('40 unidades')).toBeInTheDocument();
 });
 
-test('an empty cart shows a message and a link to see articles', async () => {
+test('an empty cart shows a message and a link to see books', async () => {
   renderAt('/carrito');
 
   expect(await screen.findByText('Tu carrito está vacío.')).toBeInTheDocument();

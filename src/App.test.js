@@ -12,7 +12,7 @@ test('route table exposes the shell sections', () => {
     'quienes-somos',
     'contacto',
     'gestion-articulos',
-    'articulos/:articleId',
+    'articulos/:bookId',
     'carrito',
     '*',
   ]);
@@ -65,7 +65,7 @@ test('unknown address keeps the menu and explains the miss', () => {
   ).toBeInTheDocument();
 });
 
-test('home lists the shared articles and no edit controls', async () => {
+test('home lists the shared books and no edit controls', async () => {
   renderAt('/');
 
   expect(await screen.findByRole('list')).toBeInTheDocument();
@@ -108,7 +108,7 @@ test('about and contact show their content', async () => {
   expect(screen.queryByRole('form')).not.toBeInTheDocument();
 });
 
-test('article pages stay inside Gestión de artículos', async () => {
+test('book pages stay inside Gestión de artículos', async () => {
   renderAt('/');
 
   await screen.findByRole('link', { name: 'Gestión de artículos' });
@@ -134,7 +134,7 @@ test('article pages stay inside Gestión de artículos', async () => {
   expect(screen.queryByRole('form')).not.toBeInTheDocument();
 });
 
-test('submitting an article shows it in the table and on home', async () => {
+test('submitting an book shows it in the table and on home', async () => {
   renderAt('/gestion-articulos/inventario-articulos');
 
   expect(await screen.findByRole('cell', { name: 'Pan hallulla' })).toBeInTheDocument();
@@ -174,7 +174,7 @@ test('submitting an article shows it in the table and on home', async () => {
   expect(screen.getByText('Pan hallulla')).toBeInTheDocument();
 });
 
-test('initial articles show their unit counts in the table', async () => {
+test('initial books show their unit counts in the table', async () => {
   renderAt('/gestion-articulos/inventario-articulos');
 
   expect(await screen.findByRole('cell', { name: '24 unidades' })).toBeInTheDocument();
@@ -225,7 +225,7 @@ test('a quantity below 1 keeps the draft and a valid quantity creates the row', 
   expect(screen.getByRole('cell', { name: '20 unidades' })).toBeInTheDocument();
 });
 
-test('matching articles add units and a different brand stays separate', async () => {
+test('matching books add units and a different brand stays separate', async () => {
   renderAt('/gestion-articulos/agregar-articulo');
 
   await screen.findByLabelText('Nombre');
@@ -252,7 +252,7 @@ test('matching articles add units and a different brand stays separate', async (
   expect(screen.queryByRole('cell', { name: 'leche entera 1 l' })).not.toBeInTheDocument();
 });
 
-test('removing an article drops it from the table and from home', async () => {
+test('removing an book drops it from the table and from home', async () => {
   renderAt('/gestion-articulos/inventario-articulos');
 
   const row = await screen.findByRole('row', { name: /Detergente 1 kg/ });

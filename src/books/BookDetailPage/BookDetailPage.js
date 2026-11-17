@@ -2,46 +2,46 @@ import { useParams } from 'react-router';
 import { Button } from '../../ui/Button/Button';
 import { Card } from '../../ui/Card/Card';
 import { PageTitle } from '../../ui/PageTitle/PageTitle';
-import { ArticleNotFound } from '../ArticleNotFound/ArticleNotFound';
+import { BookNotFound } from '../BookNotFound/BookNotFound';
 import { CategoryChip } from '../CategoryChip/CategoryChip';
 import { CategoryTile } from '../CategoryTile/CategoryTile';
-import { useArticleInventory } from '../ArticleInventoryProvider/ArticleInventoryProvider';
-import { findArticle } from '../ArticleInventoryProvider/inventoryTransitions';
-import { UnitCount } from '../UnitCount/UnitCount';
+import { useBookInventory } from '../BookInventoryProvider/BookInventoryProvider';
+import { findBook } from '../BookInventoryProvider/inventoryTransitions';
+import { StockCount } from '../StockCount/StockCount';
 
-export function ArticleDetailPage() {
+export function BookDetailPage() {
   const params = useParams();
-  const inventory = useArticleInventory();
-  const article = findArticle(inventory.articles, params.articleId);
+  const inventory = useBookInventory();
+  const book = findBook(inventory.books, params.bookId);
 
-  if (!article) {
-    return <ArticleNotFound />;
+  if (!book) {
+    return <BookNotFound />;
   }
 
-  const hasStock = article.quantity > 0;
+  const hasStock = book.quantity > 0;
 
   function addToCart() {
-    inventory.addUnitToCart(article.id);
+    inventory.addUnitToCart(book.id);
   }
 
   return (
     <section>
       <Card className="flex flex-col gap-4 p-4 lg:flex-row lg:gap-8 lg:p-6">
         <div className="flex flex-col lg:w-2/5">
-          <CategoryTile productType={article.productType} size="fill" />
+          <CategoryTile productType={book.productType} size="fill" />
         </div>
         <div className="flex flex-col gap-4 lg:flex-1 lg:justify-center">
-          <PageTitle>{article.name}</PageTitle>
+          <PageTitle>{book.name}</PageTitle>
           <dl className="grid grid-cols-[auto_1fr] items-center gap-x-6 gap-y-3 text-base">
             <dt className="text-muted">Marca</dt>
-            <dd>{article.brand}</dd>
+            <dd>{book.brand}</dd>
             <dt className="text-muted">Tipo</dt>
             <dd>
-              <CategoryChip productType={article.productType} />
+              <CategoryChip productType={book.productType} />
             </dd>
             <dt className="text-muted">Unidades disponibles</dt>
             <dd aria-live="polite">
-              <UnitCount quantity={article.quantity} />
+              <StockCount quantity={book.quantity} />
             </dd>
           </dl>
           <div>

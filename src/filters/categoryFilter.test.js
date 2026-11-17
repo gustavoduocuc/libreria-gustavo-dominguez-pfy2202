@@ -36,7 +36,7 @@ test('filtering the table by Lácteos keeps only that type and Todas restores al
   expect(screen.getAllByRole('row')).toHaveLength(7);
 });
 
-test('filtering the table does not remove articles from the inventory', async () => {
+test('filtering the table does not remove books from the inventory', async () => {
   const select = await openTable();
 
   userEvent.selectOptions(select, 'Lácteos');
@@ -45,7 +45,7 @@ test('filtering the table does not remove articles from the inventory', async ()
   expect(await screen.findByText('Pan hallulla')).toBeInTheDocument();
 });
 
-test('the table shows a message when the category has no articles', async () => {
+test('the table shows a message when the category has no books', async () => {
   const select = await openTable();
 
   userEvent.selectOptions(select, 'Carnes');
@@ -70,7 +70,7 @@ test('home offers the same filter and keeps its read-only controls', async () =>
   expect(screen.getByText('Pan hallulla')).toBeInTheDocument();
 });
 
-test('home shows a message when the category has no articles', async () => {
+test('home shows a message when the category has no books', async () => {
   const select = await openHome();
 
   userEvent.selectOptions(select, 'Carnes');

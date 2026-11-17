@@ -4,7 +4,7 @@ import { Card } from '../../ui/Card/Card';
 import { PageTitle } from '../../ui/PageTitle/PageTitle';
 import { SelectField } from '../../ui/SelectField/SelectField';
 import { TextField } from '../../ui/TextField/TextField';
-import { useArticleInventory } from '../ArticleInventoryProvider/ArticleInventoryProvider';
+import { useBookInventory } from '../BookInventoryProvider/BookInventoryProvider';
 import { productTypes } from '../productTypes';
 
 const emptyDraft = {
@@ -18,8 +18,8 @@ function isPositiveInteger(value) {
   return /^\d+$/.test(value) && Number(value) >= 1;
 }
 
-export function AddArticlePage() {
-  const inventory = useArticleInventory();
+export function AddBookPage() {
+  const inventory = useBookInventory();
   const [draft, setDraft] = useState(emptyDraft);
 
   function updateDraft(event) {
@@ -30,12 +30,12 @@ export function AddArticlePage() {
     });
   }
 
-  function submitArticle(event) {
+  function submitBook(event) {
     event.preventDefault();
     if (!isPositiveInteger(draft.quantity)) {
       return;
     }
-    inventory.addArticle({
+    inventory.addBook({
       name: draft.name,
       brand: draft.brand,
       productType: draft.productType,
@@ -48,7 +48,7 @@ export function AddArticlePage() {
     <section className="flex flex-col gap-section">
       <PageTitle>Agregar artículo</PageTitle>
       <Card className="w-full max-w-form p-4 md:p-6">
-        <form className="flex flex-col gap-4" onSubmit={submitArticle}>
+        <form className="flex flex-col gap-4" onSubmit={submitBook}>
           <TextField label="Nombre" name="name" value={draft.name} onChange={updateDraft} />
           <TextField label="Marca" name="brand" value={draft.brand} onChange={updateDraft} />
           <SelectField

@@ -2,7 +2,7 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderAt } from '../testing/renderAt';
 
-test('the table name links to the article detail', async () => {
+test('the table name links to the book detail', async () => {
   renderAt('/gestion-articulos/inventario-articulos');
 
   const row = await screen.findByRole('row', { name: /Leche entera 1 L/ });
@@ -13,7 +13,7 @@ test('the table name links to the article detail', async () => {
   );
 });
 
-test('the home name links to the article detail', async () => {
+test('the home name links to the book detail', async () => {
   renderAt('/');
 
   expect(await screen.findByRole('link', { name: 'Leche entera 1 L' })).toHaveAttribute(
@@ -22,7 +22,7 @@ test('the home name links to the article detail', async () => {
   );
 });
 
-test('clicking a name opens the detail of that article', async () => {
+test('clicking a name opens the detail of that book', async () => {
   renderAt('/');
 
   userEvent.click(await screen.findByRole('link', { name: 'Leche entera 1 L' }));
@@ -56,7 +56,7 @@ test('adding to the cart takes one unit from the inventory', async () => {
   expect(screen.getByText('22 unidades')).toBeInTheDocument();
 });
 
-test('an article without stock shows a disabled Agotado button', async () => {
+test('an book without stock shows a disabled Agotado button', async () => {
   renderAt('/articulos/detergente');
 
   await screen.findByRole('button', { name: 'Agregar al carrito' });
@@ -68,7 +68,7 @@ test('an article without stock shows a disabled Agotado button', async () => {
   expect(screen.getByRole('button', { name: 'Agotado' })).toBeDisabled();
 });
 
-test('an unknown article shows a notice, a link home and the menu', async () => {
+test('an unknown book shows a notice, a link home and the menu', async () => {
   renderAt('/articulos/xyz');
 
   expect(

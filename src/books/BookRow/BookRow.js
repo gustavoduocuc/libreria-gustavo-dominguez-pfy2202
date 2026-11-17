@@ -1,26 +1,26 @@
 import { Button } from '../../ui/Button/Button';
-import { ArticleLink } from '../ArticleLink/ArticleLink';
+import { BookLink } from '../BookLink/BookLink';
 import { bodyCellClass, stickyCellClass } from '../tableCellClass';
-import { UnitCount } from '../UnitCount/UnitCount';
+import { StockCount } from '../StockCount/StockCount';
 
-export function ArticleRow(props) {
+export function BookRow(props) {
   function removeRow() {
-    props.onRemove(props.article.id);
+    props.onRemove(props.book.id);
   }
 
   return (
     <tr className="bg-surface transition-colors duration-200 hover:bg-accent-soft">
       <td className={`${bodyCellClass} ${stickyCellClass}`}>
-        <ArticleLink article={props.article} />
+        <BookLink book={props.book} />
       </td>
-      <td className={bodyCellClass}>{props.article.brand}</td>
-      <td className={bodyCellClass}>{props.article.productType}</td>
+      <td className={bodyCellClass}>{props.book.brand}</td>
+      <td className={bodyCellClass}>{props.book.productType}</td>
       <td className={bodyCellClass}>
-        <UnitCount quantity={props.article.quantity} />
+        <StockCount quantity={props.book.quantity} />
       </td>
       <td className={bodyCellClass}>
         <Button
-          ariaLabel={`Eliminar ${props.article.name}`}
+          ariaLabel={`Eliminar ${props.book.name}`}
           variant="danger"
           onClick={removeRow}
         >

@@ -17,24 +17,24 @@ const bread = {
 };
 
 function createState() {
-  return { articles: [milk, bread], cartLines: [] };
+  return { books: [milk, bread], cartLines: [] };
 }
 
-test('registering a repeated article adds units to the same row', () => {
-  const next = transitions.registerArticle(createState(), {
+test('registering a repeated book adds units to the same row', () => {
+  const next = transitions.registerBook(createState(), {
     name: ' leche entera 1 l ',
     brand: 'COLÚN',
     productType: 'Lácteos',
     quantity: 20,
   });
 
-  expect(next.articles).toHaveLength(2);
-  expect(next.articles[0].quantity).toBe(44);
-  expect(next.articles[0].name).toBe('Leche entera 1 L');
+  expect(next.books).toHaveLength(2);
+  expect(next.books[0].quantity).toBe(44);
+  expect(next.books[0].name).toBe('Leche entera 1 L');
 });
 
-test('registering a new article appends a row with an id', () => {
-  const next = transitions.registerArticle(createState(), {
+test('registering a new book appends a row with an id', () => {
+  const next = transitions.registerBook(createState(), {
     id: 'queso-1',
     name: 'Queso',
     brand: 'Colún',
@@ -42,49 +42,49 @@ test('registering a new article appends a row with an id', () => {
     quantity: 20,
   });
 
-  expect(next.articles).toHaveLength(3);
-  expect(next.articles[2].name).toBe('Queso');
-  expect(next.articles[2].id).toBe('queso-1');
+  expect(next.books).toHaveLength(3);
+  expect(next.books[2].name).toBe('Queso');
+  expect(next.books[2].id).toBe('queso-1');
 });
 
-test('deleting an article also drops its cart lines without returning stock', () => {
+test('deleting an book also drops its cart lines without returning stock', () => {
   const state = {
-    articles: [{ ...milk, quantity: 22 }, bread],
+    books: [{ ...milk, quantity: 22 }, bread],
     cartLines: [
-      { articleId: 'leche', quantity: 2 },
-      { articleId: 'pan', quantity: 1 },
+      { bookId: 'leche', quantity: 2 },
+      { bookId: 'pan', quantity: 1 },
     ],
   };
 
-  const next = transitions.deleteArticle(state, 'leche');
+  const next = transitions.deleteBook(state, 'leche');
 
-  expect(next.articles.map(function readId(article) { return article.id; })).toEqual(['pan']);
-  expect(next.cartLines).toEqual([{ articleId: 'pan', quantity: 1 }]);
-  expect(next.articles[0].quantity).toBe(40);
+  expect(next.books.map(function readId(book) { return book.id; })).toEqual(['pan']);
+  expect(next.cartLines).toEqual([{ bookId: 'pan', quantity: 1 }]);
+  expect(next.books[0].quantity).toBe(40);
 });
 
 test('adding a unit moves one from the inventory to a new cart line', () => {
   const next = transitions.addUnitToCart(createState(), 'leche');
 
-  expect(next.articles[0].quantity).toBe(23);
-  expect(next.cartLines).toEqual([{ articleId: 'leche', quantity: 1 }]);
+  expect(next.books[0].quantity).toBe(23);
+  expect(next.cartLines).toEqual([{ bookId: 'leche', quantity: 1 }]);
 });
 
 test('adding a second unit increases the existing line', () => {
   const once = transitions.addUnitToCart(createState(), 'leche');
   const twice = transitions.addUnitToCart(once, 'leche');
 
-  expect(twice.articles[0].quantity).toBe(22);
-  expect(twice.cartLines).toEqual([{ articleId: 'leche', quantity: 2 }]);
+  expect(twice.books[0].quantity).toBe(22);
+  expect(twice.cartLines).toEqual([{ bookId: 'leche', quantity: 2 }]);
 });
 
 test('adding a unit without stock leaves the state as it was', () => {
-  const state = { articles: [{ ...milk, quantity: 0 }], cartLines: [] };
+  const state = { books: [{ ...milk, quantity: 0 }], cartLines: [] };
 
   expect(transitions.addUnitToCart(state, 'leche')).toBe(state);
 });
 
-test('adding a unit of an unknown article leaves the state as it was', () => {
+test('adding a unit of an unknown book leaves the state as it was', () => {
   const state = createState();
 
   expect(transitions.addUnitToCart(state, 'xyz')).toBe(state);
@@ -98,8 +98,8 @@ test('removing a unit returns it to the inventory', () => {
 
   const next = transitions.removeUnitFromCart(twice, 'leche');
 
-  expect(next.articles[0].quantity).toBe(23);
-  expect(next.cartLines).toEqual([{ articleId: 'leche', quantity: 1 }]);
+  expect(next.books[0].quantity).toBe(23);
+  expect(next.cartLines).toEqual([{ bookId: 'leche', quantity: 1 }]);
 });
 
 test('removing the last unit drops the line and restores the inventory', () => {
@@ -107,7 +107,7 @@ test('removing the last unit drops the line and restores the inventory', () => {
 
   const next = transitions.removeUnitFromCart(once, 'leche');
 
-  expect(next.articles[0].quantity).toBe(24);
+  expect(next.books[0].quantity).toBe(24);
   expect(next.cartLines).toEqual([]);
 });
 
@@ -122,23 +122,23 @@ test('transitions do not mutate the previous state', () => {
 
   transitions.addUnitToCart(state, 'leche');
 
-  expect(state.articles[0].quantity).toBe(24);
+  expect(state.books[0].quantity).toBe(24);
   expect(state.cartLines).toEqual([]);
 });
 
 test('counting cart units sums every line', () => {
   const lines = [
-    { articleId: 'leche', quantity: 2 },
-    { articleId: 'pan', quantity: 3 },
+    { bookId: 'leche', quantity: 2 },
+    { bookId: 'pan', quantity: 3 },
   ];
 
   expect(transitions.countCartUnits(lines)).toBe(5);
   expect(transitions.countCartUnits([])).toBe(0);
 });
 
-test('finding an article returns it by id or nothing', () => {
-  const articles = [milk, bread];
+test('finding an book returns it by id or nothing', () => {
+  const books = [milk, bread];
 
-  expect(transitions.findArticle(articles, 'pan')).toBe(bread);
-  expect(transitions.findArticle(articles, 'xyz')).toBeUndefined();
+  expect(transitions.findBook(books, 'pan')).toBe(bread);
+  expect(transitions.findBook(books, 'xyz')).toBeUndefined();
 });

@@ -1,6 +1,6 @@
-import { useArticleInventory } from '../../articles/ArticleInventoryProvider/ArticleInventoryProvider';
-import { findArticle } from '../../articles/ArticleInventoryProvider/inventoryTransitions';
-import { UnitCount } from '../../articles/UnitCount/UnitCount';
+import { useBookInventory } from '../../books/BookInventoryProvider/BookInventoryProvider';
+import { findBook } from '../../books/BookInventoryProvider/inventoryTransitions';
+import { StockCount } from '../../books/StockCount/StockCount';
 import { Card } from '../../ui/Card/Card';
 import { EmptyState } from '../../ui/EmptyState/EmptyState';
 import { PageTitle } from '../../ui/PageTitle/PageTitle';
@@ -8,7 +8,7 @@ import { TextLink } from '../../ui/TextLink/TextLink';
 import { CartLine } from '../CartLine/CartLine';
 
 export function CartPage() {
-  const inventory = useArticleInventory();
+  const inventory = useBookInventory();
 
   return (
     <section className="flex flex-col gap-section">
@@ -23,8 +23,8 @@ export function CartPage() {
             {inventory.cartLines.map(function renderLine(line) {
               return (
                 <CartLine
-                  key={line.articleId}
-                  article={findArticle(inventory.articles, line.articleId)}
+                  key={line.bookId}
+                  book={findBook(inventory.books, line.bookId)}
                   quantity={line.quantity}
                   onDecrease={inventory.removeUnitFromCart}
                   onIncrease={inventory.addUnitToCart}
@@ -33,7 +33,7 @@ export function CartPage() {
             })}
           </ul>
           <Card as="aside" className="p-4 lg:sticky lg:top-24 lg:w-72">
-            <UnitCount quantity={inventory.cartUnitCount} size="large" />
+            <StockCount quantity={inventory.cartStockCount} size="large" />
           </Card>
         </div>
       )}

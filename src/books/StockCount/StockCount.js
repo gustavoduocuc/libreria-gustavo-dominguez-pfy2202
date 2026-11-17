@@ -5,7 +5,7 @@ const sizeClasses = {
   large: `${baseClass} text-xl font-bold`,
 };
 
-export function UnitCount(props) {
+export function StockCount(props) {
   return (
     <span className={sizeClasses[props.size ?? 'normal']}>{props.quantity} unidades</span>
   );

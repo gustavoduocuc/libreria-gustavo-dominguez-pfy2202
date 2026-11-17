@@ -1,4 +1,4 @@
-import { allCategories, productTypes } from '../../articles/productTypes';
+import { allCategories, productTypes } from '../../books/productTypes';
 import { SelectField } from '../../ui/SelectField/SelectField';
 
 const options = [allCategories, ...productTypes];

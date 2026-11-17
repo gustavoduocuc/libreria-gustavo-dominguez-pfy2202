@@ -1,4 +1,4 @@
-export const defaultArticles = [
+export const defaultBooks = [
   {
     id: 'leche',
     name: 'Leche entera 1 L',

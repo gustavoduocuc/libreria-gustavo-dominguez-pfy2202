@@ -8,8 +8,8 @@ async function goTo(router, path) {
   });
 }
 
-async function addUnits(router, articleId, units) {
-  await goTo(router, `/articulos/${articleId}`);
+async function addUnits(router, bookId, units) {
+  await goTo(router, `/articulos/${bookId}`);
   for (let unit = 0; unit < units; unit += 1) {
     userEvent.click(await screen.findByRole('button', { name: 'Agregar al carrito' }));
   }
@@ -60,7 +60,7 @@ test('the cart destination shows the total units only when there are some', asyn
   expect(within(menu).getByRole('link', { name: 'Carrito 5' })).toBeInTheDocument();
 });
 
-test('an address with an article segment but no id shows the not found notice', async () => {
+test('an address with an book segment but no id shows the not found notice', async () => {
   renderAt('/articulos');
 
   expect(

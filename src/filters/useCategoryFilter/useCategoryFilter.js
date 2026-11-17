@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { allCategories } from '../../articles/productTypes';
+import { allCategories } from '../../books/productTypes';
 import { filterByCategory } from '../filterByCategory';
 
-export function useCategoryFilter(articles) {
+export function useCategoryFilter(books) {
   const [state, setState] = useState({ category: allCategories });
 
   function selectCategory(category) {
@@ -13,7 +13,7 @@ export function useCategoryFilter(articles) {
 
   return {
     category: state.category,
-    visibleArticles: filterByCategory(articles, state.category),
+    visibleBooks: filterByCategory(books, state.category),
     selectCategory,
   };
 }

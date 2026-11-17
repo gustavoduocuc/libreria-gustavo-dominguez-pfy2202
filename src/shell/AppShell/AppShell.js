@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router';
-import { ArticleInventoryProvider } from '../../articles/ArticleInventoryProvider/ArticleInventoryProvider';
+import { BookInventoryProvider } from '../../books/BookInventoryProvider/BookInventoryProvider';
 import { focusRingClass } from '../../ui/focusRing';
 import { PageContainer } from '../../ui/PageContainer/PageContainer';
 import { SectionMenu } from '../SectionMenu/SectionMenu';
@@ -8,7 +8,7 @@ const brandClass = `inline-flex min-h-11 items-center rounded text-base font-bol
 
 export function AppShell() {
   return (
-    <ArticleInventoryProvider>
+    <BookInventoryProvider>
       <div className="flex min-h-screen flex-col bg-background">
         <header className="sticky top-0 z-20 bg-surface shadow-header">
           <PageContainer className="flex min-h-16 items-center justify-between gap-4 md:flex-wrap">
@@ -24,6 +24,6 @@ export function AppShell() {
           </PageContainer>
         </main>
       </div>
-    </ArticleInventoryProvider>
+    </BookInventoryProvider>
   );
 }

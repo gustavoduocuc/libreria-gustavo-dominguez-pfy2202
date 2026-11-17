@@ -5,25 +5,25 @@ const baseLinkClass = `inline-flex min-h-11 items-center rounded-control px-3 py
 const currentLinkClass = `${baseLinkClass} bg-accent-soft font-semibold text-accent`;
 const otherLinkClass = `${baseLinkClass} text-muted hover:bg-surface hover:text-text`;
 
-export function ArticleManagementIndex() {
+export function BookManagementIndex() {
   return <Navigate to="inventario-articulos" replace />;
 }
 
-function articleLinkClass(state) {
+function bookLinkClass(state) {
   if (state.isActive) {
     return currentLinkClass;
   }
   return otherLinkClass;
 }
 
-export function ArticleManagementLayout() {
+export function BookManagementLayout() {
   return (
     <>
       <nav aria-label="Gestión de artículos" className="mb-section flex flex-wrap gap-2">
-        <NavLink className={articleLinkClass} to="agregar-articulo">
+        <NavLink className={bookLinkClass} to="agregar-articulo">
           Agregar artículo
         </NavLink>
-        <NavLink className={articleLinkClass} to="inventario-articulos">
+        <NavLink className={bookLinkClass} to="inventario-articulos">
           Inventario de artículos
         </NavLink>
       </nav>

@@ -2,7 +2,7 @@ import { EmptyState } from '../../ui/EmptyState/EmptyState';
 import { PageTitle } from '../../ui/PageTitle/PageTitle';
 import { TextLink } from '../../ui/TextLink/TextLink';
 
-export function ArticleNotFound() {
+export function BookNotFound() {
   return (
     <section className="flex flex-col gap-section">
       <PageTitle>Artículo no encontrado</PageTitle>

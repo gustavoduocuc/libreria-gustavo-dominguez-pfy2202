@@ -8,7 +8,7 @@ async function goTo(router, path) {
   });
 }
 
-test('removing an article from the table also removes it from home and the cart', async () => {
+test('removing an book from the table also removes it from home and the cart', async () => {
   const router = renderAt('/articulos/leche');
 
   userEvent.click(await screen.findByRole('button', { name: 'Agregar al carrito' }));

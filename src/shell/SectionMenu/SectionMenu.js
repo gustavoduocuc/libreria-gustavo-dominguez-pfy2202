@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import { useArticleInventory } from '../../articles/ArticleInventoryProvider/ArticleInventoryProvider';
+import { useBookInventory } from '../../books/BookInventoryProvider/BookInventoryProvider';
 import { focusRingClass } from '../../ui/focusRing';
 
 const menuClass =
@@ -19,7 +19,7 @@ function sectionLinkClass(state) {
 }
 
 export function SectionMenu() {
-  const inventory = useArticleInventory();
+  const inventory = useBookInventory();
 
   return (
     <nav className={menuClass} aria-label="Secciones">
@@ -34,8 +34,8 @@ export function SectionMenu() {
       </NavLink>
       <NavLink className={sectionLinkClass} to="/carrito">
         Carrito
-        {inventory.cartUnitCount > 0 && (
-          <span className={badgeClass}>{inventory.cartUnitCount}</span>
+        {inventory.cartStockCount > 0 && (
+          <span className={badgeClass}>{inventory.cartStockCount}</span>
         )}
       </NavLink>
       <NavLink className={sectionLinkClass} to="/gestion-articulos">

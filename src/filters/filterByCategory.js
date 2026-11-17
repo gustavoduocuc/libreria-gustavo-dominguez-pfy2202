@@ -1,10 +1,10 @@
-import { allCategories } from '../articles/productTypes';
+import { allCategories } from '../books/productTypes';
 
-export function filterByCategory(articles, category) {
+export function filterByCategory(books, category) {
   if (category === allCategories) {
-    return articles;
+    return books;
   }
-  return articles.filter(function isInCategory(article) {
-    return article.productType === category;
+  return books.filter(function isInCategory(book) {
+    return book.productType === category;
   });
 }
