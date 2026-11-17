@@ -1,7 +1,8 @@
 {
-  "name": "supermarket-la-quinta",
+  "name": "libreria-gustavo-dominguez-pfy2202",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://gustavoduocuc.github.io/libreria-gustavo-dominguez-pfy2202",
   "dependencies": {
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^6.9.1",
