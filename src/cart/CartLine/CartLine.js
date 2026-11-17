@@ -9,7 +9,7 @@ export function CartLine(props) {
   const book = props.book;
 
   function increase() {
-    props.onIncrease(book.id);
+    props.onIncrease(book);
   }
 
   function decrease() {
@@ -40,7 +40,7 @@ export function CartLine(props) {
         <QuantityButton
           action="Aumentar"
           book={book}
-          disabled={book.stock < 1}
+          disabled={props.availableStock < 1}
           symbol="+"
           onClick={increase}
         />

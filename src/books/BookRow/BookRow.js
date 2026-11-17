@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Button } from '../../ui/Button/Button';
 import { BookLink } from '../BookLink/BookLink';
 import { Price } from '../Price/Price';
@@ -5,8 +6,12 @@ import { StockCount } from '../StockCount/StockCount';
 import { bodyCellClass, stickyCellClass } from '../tableCellClass';
 
 export function BookRow(props) {
-  function removeRow() {
-    props.onRemove(props.book.id);
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  async function removeRow() {
+    setIsRemoving(true);
+    await props.onRemove(props.book.id);
+    setIsRemoving(false);
   }
 
   return (
@@ -23,8 +28,13 @@ export function BookRow(props) {
         <StockCount stock={props.book.stock} />
       </td>
       <td className={bodyCellClass}>
-        <Button ariaLabel={`Eliminar ${props.book.title}`} variant="danger" onClick={removeRow}>
-          Eliminar
+        <Button
+          ariaLabel={`Eliminar ${props.book.title}`}
+          disabled={isRemoving}
+          variant="danger"
+          onClick={removeRow}
+        >
+          {isRemoving ? 'Eliminando…' : 'Eliminar'}
         </Button>
       </td>
     </tr>

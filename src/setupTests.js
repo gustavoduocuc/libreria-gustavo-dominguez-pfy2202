@@ -17,5 +17,6 @@ if (typeof global.crypto === 'undefined') {
 
 afterEach(() => {
   delete global.fetch;
+  localStorage.clear();
   bookStore.reset();
 });

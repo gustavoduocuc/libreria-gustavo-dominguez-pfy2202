@@ -9,7 +9,8 @@ export function jsonResponse(status, body) {
 
 export function mockFetch(routes) {
   global.fetch = jest.fn(function fakeFetch(path, options) {
-    const handler = routes[path];
+    // El catálogo del cascarón pide los libros al montar; por defecto responde sin libros.
+    const handler = path === '/graphql' && !routes[path] ? jsonResponse(200, { data: { books: [] } }) : routes[path];
     if (!handler) {
       return Promise.reject(new TypeError(`Sin respuesta simulada para ${path}`));
     }

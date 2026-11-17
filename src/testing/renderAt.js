@@ -5,7 +5,7 @@ import { installFakeBackend } from './fakeBackend';
 
 // Si la prueba no instaló su propio fetch, se usa el backend mock simulado.
 export function renderAt(path) {
-  if (!global.fetch) {
+  if (!jest.isMockFunction(global.fetch)) {
     installFakeBackend();
   }
   const router = createMemoryRouter(routes, { initialEntries: [path] });
