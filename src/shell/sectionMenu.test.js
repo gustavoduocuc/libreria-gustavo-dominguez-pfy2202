@@ -15,7 +15,7 @@ async function addUnits(router, bookId, units) {
   }
 }
 
-test('the menu has five destinations in order', async () => {
+test('the menu has six destinations in order', async () => {
   renderAt('/');
 
   const menu = await screen.findByRole('navigation', { name: 'Secciones' });
@@ -27,6 +27,7 @@ test('the menu has five destinations in order', async () => {
 
   expect(names).toEqual([
     'Inicio',
+    'Categorías',
     'Quiénes somos',
     'Contáctanos',
     'Carrito',
