@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { seedBooks } from '../data';
 import { jsonResponse, mockFetch, restoreFetch } from '../testing/mockFetch';
@@ -99,7 +99,9 @@ test('changing the category reloads and shows only its books', async () => {
   await screen.findByRole('link', { name: 'Cien años de soledad' });
 
   await userEvent.click(screen.getByRole('link', { name: 'Categorías' }));
-  router.navigate('/categorias/fantasia');
+  await act(async () => {
+    await router.navigate('/categorias/fantasia');
+  });
 
   expect(await screen.findByRole('link', { name: 'El Hobbit' })).toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Cien años de soledad' })).not.toBeInTheDocument();

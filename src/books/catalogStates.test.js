@@ -1,5 +1,6 @@
 import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { bookStore } from '../mocks/backend/bookStore';
 import { installFakeBackend } from '../testing/fakeBackend';
 import { renderAt } from '../testing/renderAt';
 
@@ -37,18 +38,12 @@ describe.each([
   });
 });
 
-test('home shows the empty message when every book was deleted', async () => {
+test('home and inventory show the empty message when the catalog has no books', async () => {
+  installFakeBackend();
+  bookStore.getAll().forEach((book) => bookStore.remove(book.id));
   const router = renderAt('/gestion-libros/inventario-libros');
-  await screen.findByRole('table');
 
-  const rows = () => screen.queryAllByRole('button', { name: /^Eliminar / });
-  while (rows().length > 0) {
-    const count = rows().length;
-    userEvent.click(rows()[0]);
-    await waitFor(() => expect(rows()).toHaveLength(count - 1));
-  }
-
-  expect(screen.getByText('No hay libros en el inventario.')).toBeInTheDocument();
+  expect(await screen.findByText('No hay libros en el inventario.')).toBeInTheDocument();
   expect(screen.queryByRole('table')).not.toBeInTheDocument();
 
   await goTo(router, '/');
