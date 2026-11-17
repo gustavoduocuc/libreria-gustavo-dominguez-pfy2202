@@ -1,4 +1,6 @@
 import { useParams } from 'react-router';
+import { withAvailableStock } from '../../books/getAvailableStock';
+import { useCart } from '../../cart/CartProvider/CartProvider';
 import { BookCard } from '../../home/BookCard/BookCard';
 import { PageTitle } from '../../ui/PageTitle/PageTitle';
 import { StatusMessage } from '../StatusMessage/StatusMessage';
@@ -15,6 +17,7 @@ function readTitle(status, slug) {
 export function CategoryBooksPage() {
   const params = useParams();
   const books = useCategoryBooks(params.slug);
+  const cart = useCart();
 
   return (
     <section className="flex flex-col gap-section">
@@ -31,7 +34,7 @@ export function CategoryBooksPage() {
           aria-label="Libros"
           className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3"
         >
-          {books.data.map(function renderBook(book) {
+          {withAvailableStock(books.data, cart.cartLines).map(function renderBook(book) {
             return <BookCard key={book.id} book={book} />;
           })}
         </ul>

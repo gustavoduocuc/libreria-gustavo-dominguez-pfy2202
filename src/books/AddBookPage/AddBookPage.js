@@ -5,7 +5,8 @@ import { Card } from '../../ui/Card/Card';
 import { PageTitle } from '../../ui/PageTitle/PageTitle';
 import { SelectField } from '../../ui/SelectField/SelectField';
 import { TextField } from '../../ui/TextField/TextField';
-import { useBookInventory } from '../BookInventoryProvider/BookInventoryProvider';
+import { useBookCatalog } from '../BookCatalogProvider/BookCatalogProvider';
+import { toAddBookInput } from '../toAddBookInput';
 
 const emptyDraft = {
   title: '',
@@ -15,26 +16,13 @@ const emptyDraft = {
   stock: '1',
 };
 
-function isPositiveInteger(value) {
-  return /^\d+$/.test(value) && Number(value) >= 1;
-}
-
-function isFilled(value) {
-  return value.trim() !== '';
-}
-
-function isValidDraft(draft) {
-  return (
-    isFilled(draft.title) &&
-    isFilled(draft.author) &&
-    isPositiveInteger(draft.price) &&
-    isPositiveInteger(draft.stock)
-  );
-}
+const noFeedback = { fieldErrors: {}, generalError: null, confirmation: null };
 
 export function AddBookPage() {
-  const inventory = useBookInventory();
+  const catalog = useBookCatalog();
   const [draft, setDraft] = useState(emptyDraft);
+  const [feedback, setFeedback] = useState(noFeedback);
+  const [isSending, setIsSending] = useState(false);
 
   function updateDraft(event) {
     const field = event.target.name;
@@ -44,29 +32,48 @@ export function AddBookPage() {
     });
   }
 
-  function submitBook(event) {
+  async function submitBook(event) {
     event.preventDefault();
-    if (!isValidDraft(draft)) {
-      return;
+    setIsSending(true);
+    setFeedback(noFeedback);
+    try {
+      await catalog.addBook(toAddBookInput(draft));
+      setDraft(emptyDraft);
+      setFeedback({ ...noFeedback, confirmation: 'Libro agregado.' });
+    } catch (error) {
+      const fieldErrors = error.fieldErrors ?? {};
+      const hasFieldErrors = Object.keys(fieldErrors).length > 0;
+      setFeedback({
+        ...noFeedback,
+        fieldErrors,
+        generalError: hasFieldErrors ? null : error.message,
+      });
+    } finally {
+      setIsSending(false);
     }
-    inventory.addBook({
-      title: draft.title,
-      author: draft.author,
-      category: draft.category,
-      price: Number(draft.price),
-      stock: Number(draft.stock),
-    });
-    setDraft(emptyDraft);
   }
 
   return (
     <section className="flex flex-col gap-section">
       <PageTitle>Agregar libro</PageTitle>
       <Card className="w-full max-w-form p-4 md:p-6">
-        <form className="flex flex-col gap-4" onSubmit={submitBook}>
-          <TextField label="Título" name="title" value={draft.title} onChange={updateDraft} />
-          <TextField label="Autor" name="author" value={draft.author} onChange={updateDraft} />
+        <form className="flex flex-col gap-4" noValidate onSubmit={submitBook}>
+          <TextField
+            error={feedback.fieldErrors.title}
+            label="Título"
+            name="title"
+            value={draft.title}
+            onChange={updateDraft}
+          />
+          <TextField
+            error={feedback.fieldErrors.author}
+            label="Autor"
+            name="author"
+            value={draft.author}
+            onChange={updateDraft}
+          />
           <SelectField
+            error={feedback.fieldErrors.categoryId}
             label="Categoría"
             name="category"
             options={bookCategories}
@@ -74,6 +81,7 @@ export function AddBookPage() {
             onChange={updateDraft}
           />
           <TextField
+            error={feedback.fieldErrors.price}
             label="Precio (CLP)"
             min="1"
             name="price"
@@ -83,6 +91,7 @@ export function AddBookPage() {
             onChange={updateDraft}
           />
           <TextField
+            error={feedback.fieldErrors.stock}
             label="Stock"
             min="1"
             name="stock"
@@ -91,8 +100,20 @@ export function AddBookPage() {
             value={draft.stock}
             onChange={updateDraft}
           />
+          {feedback.generalError && (
+            <p className="text-danger" role="alert">
+              {feedback.generalError}
+            </p>
+          )}
+          {feedback.confirmation && (
+            <p className="text-accent" role="status">
+              {feedback.confirmation}
+            </p>
+          )}
           <div>
-            <Button type="submit">Agregar</Button>
+            <Button disabled={isSending} type="submit">
+              {isSending ? 'Agregando…' : 'Agregar'}
+            </Button>
           </div>
         </form>
       </Card>

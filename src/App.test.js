@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from './routing/routes';
 import { renderAt } from './testing/renderAt';
@@ -12,6 +12,7 @@ async function fillBookForm({ title, author, category, price, stock }) {
   await userEvent.clear(screen.getByLabelText('Stock'));
   await userEvent.type(screen.getByLabelText('Stock'), stock);
   await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+  await screen.findByRole('button', { name: 'Agregar' });
 }
 
 test('route table exposes the shell sections', () => {
@@ -228,7 +229,7 @@ test('initial books show their price and units in the table', async () => {
   expect(screen.getAllByRole('row')).toHaveLength(17);
 });
 
-test('invalid stock, price or title keep the draft and add nothing', async () => {
+test('invalid stock, price or title show the server errors, keep the draft and add nothing', async () => {
   renderAt('/gestion-libros/agregar-libro');
 
   await screen.findByRole('heading', { level: 1, name: 'Agregar libro' });
@@ -242,27 +243,100 @@ test('invalid stock, price or title keep the draft and add nothing', async () =>
 
   expect(screen.getByLabelText('Título')).toHaveValue('Rayuela');
   expect(screen.getByLabelText('Stock')).toHaveValue(0);
+  expect(screen.getByLabelText('Stock')).toHaveAttribute('aria-invalid', 'true');
+  expect(screen.getByLabelText('Stock')).toHaveAccessibleDescription(/stock debe ser/i);
+  expect(screen.getByLabelText('Título')).not.toHaveAttribute('aria-invalid');
+  expect(screen.queryByRole('status')).not.toBeInTheDocument();
 
   await userEvent.clear(screen.getByLabelText('Stock'));
   await userEvent.type(screen.getByLabelText('Stock'), '3');
   await userEvent.clear(screen.getByLabelText('Precio (CLP)'));
   await userEvent.type(screen.getByLabelText('Precio (CLP)'), '0');
   await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+  await screen.findByRole('button', { name: 'Agregar' });
 
   expect(screen.getByLabelText('Título')).toHaveValue('Rayuela');
+  expect(screen.getByLabelText('Precio (CLP)')).toHaveAccessibleDescription(/precio debe ser/i);
+  expect(screen.getByLabelText('Stock')).not.toHaveAttribute('aria-invalid');
 
   await userEvent.clear(screen.getByLabelText('Precio (CLP)'));
   await userEvent.type(screen.getByLabelText('Precio (CLP)'), '9990');
   await userEvent.clear(screen.getByLabelText('Título'));
   await userEvent.type(screen.getByLabelText('Título'), '   ');
   await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+  await screen.findByRole('button', { name: 'Agregar' });
 
+  expect(screen.getByLabelText('Título')).toHaveAccessibleDescription(/título es obligatorio/i);
   expect(screen.getByLabelText('Autor')).toHaveValue('Julio Cortázar');
 
   await userEvent.click(screen.getByRole('link', { name: 'Inventario de libros' }));
   expect(await screen.findByRole('cell', { name: 'Dune' })).toBeInTheDocument();
   expect(screen.queryByRole('cell', { name: 'Rayuela' })).not.toBeInTheDocument();
   expect(screen.getAllByRole('row')).toHaveLength(17);
+});
+
+test('several invalid fields at once are all marked', async () => {
+  renderAt('/gestion-libros/agregar-libro');
+
+  await screen.findByRole('heading', { level: 1, name: 'Agregar libro' });
+  await userEvent.clear(screen.getByLabelText('Stock'));
+  await userEvent.type(screen.getByLabelText('Stock'), '0');
+  await userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+  await screen.findByRole('button', { name: 'Agregar' });
+
+  ['Título', 'Autor', 'Precio (CLP)', 'Stock'].forEach((label) => {
+    expect(screen.getByLabelText(label)).toHaveAttribute('aria-invalid', 'true');
+  });
+  expect(screen.getByLabelText('Categoría')).not.toHaveAttribute('aria-invalid');
+});
+
+test('the form shows a pending state while the book is being added', async () => {
+  renderAt('/gestion-libros/agregar-libro');
+
+  await screen.findByRole('heading', { level: 1, name: 'Agregar libro' });
+  await userEvent.type(screen.getByLabelText('Título'), 'Rayuela');
+  await userEvent.type(screen.getByLabelText('Autor'), 'Julio Cortázar');
+  await userEvent.type(screen.getByLabelText('Precio (CLP)'), '9990');
+  userEvent.click(screen.getByRole('button', { name: 'Agregar' }));
+
+  expect(screen.getByRole('button', { name: 'Agregando…' })).toBeDisabled();
+  expect(await screen.findByRole('status')).toHaveTextContent('Libro agregado.');
+  expect(screen.getByRole('button', { name: 'Agregar' })).toBeEnabled();
+});
+
+test('a server failure shows an alert and keeps the draft', async () => {
+  renderAt('/gestion-libros/agregar-libro');
+
+  await screen.findByRole('heading', { level: 1, name: 'Agregar libro' });
+  await fillBookForm({
+    title: 'error-500',
+    author: 'Alguien',
+    category: 'Ficción',
+    price: '1000',
+    stock: '1',
+  });
+
+  expect(screen.getByRole('alert')).toHaveTextContent('Error simulado del servidor.');
+  expect(screen.getByLabelText('Título')).toHaveValue('error-500');
+});
+
+test('a book added with the form appears in its category page and one removed disappears', async () => {
+  const router = renderAt('/gestion-libros/agregar-libro');
+
+  await screen.findByRole('heading', { level: 1, name: 'Agregar libro' });
+  await fillBookForm({
+    title: 'Versos sencillos',
+    author: 'José Martí',
+    category: 'Poesía',
+    price: '5990',
+    stock: '4',
+  });
+  await act(async () => {
+    await router.navigate('/categorias/poesia');
+  });
+
+  expect(await screen.findByRole('link', { name: 'Versos sencillos' })).toBeInTheDocument();
+  expect(screen.queryByText('No hay libros en esta categoría.')).not.toBeInTheDocument();
 });
 
 test('a matching book adds stock and keeps its price; another author stays separate', async () => {
@@ -300,7 +374,7 @@ test('removing a book drops it from the table and from home', async () => {
   const row = await screen.findByRole('row', { name: /Matilda/ });
   await userEvent.click(within(row).getByRole('button', { name: /Eliminar/ }));
 
-  expect(screen.queryByRole('cell', { name: 'Matilda' })).not.toBeInTheDocument();
+  await waitFor(() => expect(screen.queryByRole('cell', { name: 'Matilda' })).not.toBeInTheDocument());
 
   await userEvent.click(screen.getByRole('link', { name: 'Inicio' }));
 

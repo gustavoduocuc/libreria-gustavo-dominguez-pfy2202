@@ -1,5 +1,8 @@
 import { categories, seedBooks } from '../data';
+import { bookStore } from './backend/bookStore';
 import { findCategoryBySlug, listBooksByCategorySlug } from './catalogQueries';
+
+beforeEach(() => bookStore.reset());
 
 test('finds a category by slug or nothing', () => {
   expect(findCategoryBySlug('ficcion').name).toBe('Ficción');

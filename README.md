@@ -7,7 +7,7 @@ Tienda de libros. Muestra un catálogo de libros por categoría, el detalle de c
 - React 19 con Create React App (`react-scripts`)
 - React Router
 - Tailwind CSS
-- API REST mock con MSW
+- API mock con MSW: REST (categorías) y GraphQL (libros)
 
 ## Rutas
 
@@ -38,7 +38,7 @@ npm run build   # build de producción en la carpeta build/
 
 ## API mock
 
-Las páginas de categorías consumen una API REST simulada con [MSW](https://mswjs.io) que corre en el navegador (service worker). Está activa por defecto, también en el sitio publicado.
+La app consume APIs simuladas con [MSW](https://mswjs.io) que corren en el navegador (service worker). REST sirve las categorías y GraphQL gestiona los libros; ambas comparten un único almacén en memoria. Están activas por defecto, también en el sitio publicado.
 
 | Petición | Respuesta |
 |---|---|
@@ -47,7 +47,23 @@ Las páginas de categorías consumen una API REST simulada con [MSW](https://msw
 
 - **Desactivarla:** compila con `REACT_APP_USE_MOCKS=false` (ver `.env.example`). Si ya visitaste el sitio con el mock activo, des-registra el service worker en DevTools → Application → Service Workers.
 - **Probar un error 500 (solo en desarrollo):** con `npm start`, abre `/libreria-gustavo-dominguez-pfy2202/categorias/error-500`. En el build publicado ese slug responde 404.
-- **Limitación:** los libros agregados desde el formulario, el stock descontado por el carrito y los libros eliminados aún no se reflejan en las páginas de categoría, que muestran los datos semilla.
+- **Datos en memoria:** los libros agregados o eliminados se ven en todas las pantallas, incluidas las de categoría (REST). Al recargar la página el almacén vuelve a los datos semilla.
+
+### API GraphQL (`POST /graphql`)
+
+```graphql
+type Category { id: ID!  slug: String!  name: String!  description: String! }
+type Book { id: ID!  title: String!  author: String!  category: Category!  price: Int!  stock: Int! }
+input AddBookInput { title: String!  author: String!  categoryId: ID!  price: Int!  stock: Int! }
+type Query { books(category: String): [Book!]!  book(id: ID!): Book }
+type Mutation { addBook(input: AddBookInput!): Book!  deleteBook(id: ID!): Book! }
+```
+
+- Las operaciones usadas son `Books`, `Book`, `AddBook` y `DeleteBook`.
+- La validación responde HTTP 200 con `errors[]`; cada error de campo trae `extensions.field` (`title`, `author`, `categoryId`, `price`, `stock`).
+- Agregar un libro con el mismo título, autor y categoría suma el stock al existente.
+- Las unidades que se muestran son el stock del servidor menos las unidades en el carrito; eliminar un libro también lo quita del carrito.
+- **Errores simulados (solo en desarrollo):** `books(category: "error-500")`, `addBook` con título `error-500`, o `localStorage.mockFailOperation = "<Operación>"` (por ejemplo `Books` o `DeleteBook`). En el build publicado se ignoran.
 - `npm start` sirve la app bajo `/libreria-gustavo-dominguez-pfy2202/` (por el campo `homepage`).
 
 ## Publicación
