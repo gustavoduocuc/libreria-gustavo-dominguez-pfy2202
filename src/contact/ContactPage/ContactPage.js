@@ -7,7 +7,7 @@ export function ContactPage() {
   const contact = useLoaderData();
 
   return (
-    <article className="flex flex-col gap-section">
+    <book className="flex flex-col gap-section">
       <PageTitle>Contáctanos</PageTitle>
       <Card className="w-full max-w-reading p-4 md:p-6">
         <address className="flex flex-col gap-4 not-italic">
@@ -24,6 +24,6 @@ export function ContactPage() {
           </dl>
         </address>
       </Card>
-    </article>
+    </book>
   );
 }

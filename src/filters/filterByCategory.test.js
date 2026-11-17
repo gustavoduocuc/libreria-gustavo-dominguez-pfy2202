@@ -1,37 +1,37 @@
-import { allCategories, productTypes } from '../articles/productTypes';
+import { allCategories, bookCategories } from '../data';
 import { filterByCategory } from './filterByCategory';
 
-const articles = [
-  { id: 'leche', productType: 'Lácteos' },
-  { id: 'pan', productType: 'Panadería' },
-  { id: 'queso', productType: 'Lácteos' },
+const books = [
+  { id: 'hobbit', category: 'Fantasía' },
+  { id: 'orgullo', category: 'Romance' },
+  { id: 'dune-fantasy', category: 'Fantasía' },
 ];
 
-test('Todas keeps every article', () => {
-  expect(filterByCategory(articles, allCategories)).toEqual(articles);
+test('Todas keeps every book', () => {
+  expect(filterByCategory(books, allCategories)).toEqual(books);
 });
 
-test('a category keeps only its articles', () => {
-  const visible = filterByCategory(articles, 'Lácteos');
+test('a category keeps only its books', () => {
+  const visible = filterByCategory(books, 'Fantasía');
 
-  expect(visible.map(function readId(article) { return article.id; })).toEqual([
-    'leche',
-    'queso',
+  expect(visible.map(function readId(book) { return book.id; })).toEqual([
+    'hobbit',
+    'dune-fantasy',
   ]);
 });
 
-test('a category without articles gives an empty list', () => {
-  expect(filterByCategory(articles, 'Carnes')).toEqual([]);
+test('a category without books gives an empty list', () => {
+  expect(filterByCategory(books, 'Poesía')).toEqual([]);
 });
 
 test('filtering leaves the original list untouched', () => {
-  const copy = articles.slice();
+  const copy = books.slice();
 
-  filterByCategory(articles, 'Lácteos');
+  filterByCategory(books, 'Fantasía');
 
-  expect(articles).toEqual(copy);
+  expect(books).toEqual(copy);
 });
 
-test('there are ten closed categories', () => {
-  expect(productTypes).toHaveLength(10);
+test('there are nine closed categories', () => {
+  expect(bookCategories).toHaveLength(9);
 });

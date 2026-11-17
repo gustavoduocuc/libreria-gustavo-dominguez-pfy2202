@@ -3,7 +3,7 @@ import { createMemoryRouter, RouterProvider } from 'react-router';
 import { routes } from './routes';
 import { getRouterBasename } from './routerBasename';
 
-const publishedBase = '/supermercado-gustavo-dominguez-frontend2';
+const publishedBase = '/libreria-gustavo-dominguez-pfy2202';
 
 test('an empty public url keeps the app at the root', () => {
   expect(getRouterBasename('')).toBe('/');

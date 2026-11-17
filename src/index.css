@@ -3,47 +3,48 @@
 @tailwind utilities;
 
 :root {
-  --color-background: #f6f4ef;
-  --color-surface: #ffffff;
-  --color-text: #1c1915;
-  --color-muted: #5c564e;
-  --color-accent: #1f6b4a;
-  --color-accent-strong: #17553a;
-  --color-accent-soft: #e7f1eb;
+  --color-background: #f7f1e5;
+  --color-surface: #fffaf0;
+  --color-text: #2a1f17;
+  --color-muted: #5f5143;
+  --color-accent: #24473a;
+  --color-accent-strong: #1a352b;
+  --color-accent-soft: #e4ede7;
+  --color-highlight: #9a4a06;
   --color-danger: #b42318;
   --color-danger-soft: #fdecea;
-  --color-line: #e4ddd2;
-  --color-field: #8a8378;
+  --color-line: #e3d8c3;
+  --color-field: #8a7b66;
 
-  --color-category-abarrotes-bg: #f6ecd6;
-  --color-category-abarrotes-fg: #6b4a0b;
-  --color-category-bebidas-bg: #e1edf7;
-  --color-category-bebidas-fg: #1d4e7a;
-  --color-category-carnes-bg: #f8e1de;
-  --color-category-carnes-fg: #8a2b22;
-  --color-category-congelados-bg: #dff1f3;
-  --color-category-congelados-fg: #17575f;
-  --color-category-frescos-bg: #e3f1e1;
-  --color-category-frescos-fg: #26602a;
-  --color-category-higiene-bg: #ebe4f5;
-  --color-category-higiene-fg: #4f3580;
-  --color-category-lacteos-bg: #f5f1d3;
-  --color-category-lacteos-fg: #5e5410;
-  --color-category-limpieza-bg: #dcf2ea;
-  --color-category-limpieza-fg: #14614a;
-  --color-category-panaderia-bg: #f9e4d2;
-  --color-category-panaderia-fg: #7a3f0e;
-  --color-category-otros-bg: #ece8e1;
-  --color-category-otros-fg: #4a443b;
+  --color-category-ficcion-bg: #efd9d3;
+  --color-category-ficcion-fg: #6b2a1f;
+  --color-category-ciencia-ficcion-bg: #d6e3ee;
+  --color-category-ciencia-ficcion-fg: #1c3f63;
+  --color-category-fantasia-bg: #e4dcf0;
+  --color-category-fantasia-fg: #473070;
+  --color-category-misterio-suspenso-bg: #dcdbd6;
+  --color-category-misterio-suspenso-fg: #33322c;
+  --color-category-romance-bg: #f3d9e0;
+  --color-category-romance-fg: #7a2140;
+  --color-category-historia-bg: #eadfc4;
+  --color-category-historia-fg: #5c430a;
+  --color-category-ciencia-tecnologia-bg: #d3e9e6;
+  --color-category-ciencia-tecnologia-fg: #124f4a;
+  --color-category-infantil-juvenil-bg: #fbe6b8;
+  --color-category-infantil-juvenil-fg: #6e4400;
+  --color-category-poesia-bg: #e2ebd0;
+  --color-category-poesia-fg: #3d5718;
+  --color-category-neutral-bg: #ece6da;
+  --color-category-neutral-fg: #4a4338;
 
   --radius-card: 1rem;
   --radius-control: 0.625rem;
   --radius-pill: 9999px;
 
-  --shadow-card: 0 1px 2px rgb(28 25 21 / 0.06), 0 1px 3px rgb(28 25 21 / 0.04);
-  --shadow-header: 0 1px 0 var(--color-line), 0 2px 8px rgb(28 25 21 / 0.06);
-  --shadow-menu: 0 -2px 8px rgb(28 25 21 / 0.08);
-  --shadow-sticky: 1px 0 0 var(--color-line), 6px 0 8px -4px rgb(28 25 21 / 0.14);
+  --shadow-card: 0 1px 2px rgb(42 31 23 / 0.06), 0 1px 3px rgb(42 31 23 / 0.04);
+  --shadow-header: 0 1px 0 var(--color-line), 0 2px 8px rgb(42 31 23 / 0.06);
+  --shadow-menu: 0 -2px 8px rgb(42 31 23 / 0.08);
+  --shadow-sticky: 1px 0 0 var(--color-line), 6px 0 8px -4px rgb(42 31 23 / 0.14);
 
   --size-page: 72rem;
   --size-form: 36rem;
@@ -53,6 +54,7 @@
   --space-gutter-wide: 1.5rem;
   --space-section: 1.5rem;
 
+  --font-serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
 }

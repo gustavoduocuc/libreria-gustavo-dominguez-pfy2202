@@ -1,7 +1,7 @@
-import { allCategories, productTypes } from '../../articles/productTypes';
+import { allCategories, bookCategories } from '../../data';
 import { SelectField } from '../../ui/SelectField/SelectField';
 
-const options = [allCategories, ...productTypes];
+const options = [allCategories, ...bookCategories];
 
 export function CategoryFilter(props) {
   function chooseCategory(event) {

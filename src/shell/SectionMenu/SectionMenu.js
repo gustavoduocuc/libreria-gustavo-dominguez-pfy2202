@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import { useArticleInventory } from '../../articles/ArticleInventoryProvider/ArticleInventoryProvider';
+import { useBookInventory } from '../../books/BookInventoryProvider/BookInventoryProvider';
 import { focusRingClass } from '../../ui/focusRing';
 
 const menuClass =
@@ -8,7 +8,7 @@ const linkBaseClass = `flex min-h-11 flex-auto items-center justify-center gap-1
 const linkCurrentClass = `${linkBaseClass} bg-accent-soft font-semibold text-accent`;
 const linkOtherClass = `${linkBaseClass} text-muted hover:bg-background hover:text-text`;
 const badgeClass =
-  'rounded-pill bg-accent px-1.5 text-sm font-bold leading-normal text-surface';
+  'rounded-pill bg-highlight px-1.5 text-sm font-bold leading-normal text-surface';
 
 function sectionLinkClass(state) {
   if (state.isActive) {
@@ -19,7 +19,7 @@ function sectionLinkClass(state) {
 }
 
 export function SectionMenu() {
-  const inventory = useArticleInventory();
+  const inventory = useBookInventory();
 
   return (
     <nav className={menuClass} aria-label="Secciones">
@@ -38,8 +38,8 @@ export function SectionMenu() {
           <span className={badgeClass}>{inventory.cartUnitCount}</span>
         )}
       </NavLink>
-      <NavLink className={sectionLinkClass} to="/gestion-articulos">
-        Gestión de artículos
+      <NavLink className={sectionLinkClass} to="/gestion-libros">
+        Gestión de libros
       </NavLink>
     </nav>
   );
