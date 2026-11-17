@@ -1,4 +1,5 @@
-import { categories, seedBooks } from '../data';
+import { categories } from '../data';
+import { bookStore } from './backend/bookStore';
 
 export function findCategoryBySlug(slug) {
   return categories.find(function hasSlug(category) {
@@ -12,7 +13,5 @@ export function listBooksByCategorySlug(slug) {
   if (!category) {
     return null;
   }
-  return seedBooks.filter(function isInCategory(book) {
-    return book.category === category.name;
-  });
+  return bookStore.listByCategoryName(category.name);
 }
