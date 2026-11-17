@@ -1,6 +1,6 @@
-# Librería PFY2202
+# Librería Tinta y Papel
 
-Tienda de libros desarrollada para la asignatura PFY2202 (Desarrollo Frontend II). Este repositorio contiene la base del proyecto; las funcionalidades de la tienda se incorporan de forma incremental.
+Tienda de libros desarrollada para la asignatura PFY2202 (Desarrollo Frontend II). Muestra un catálogo de libros por categoría, el detalle de cada libro, un carrito y la gestión del inventario. Los datos viven en memoria y se reinician al recargar.
 
 ## Stack
 
@@ -8,6 +8,17 @@ Tienda de libros desarrollada para la asignatura PFY2202 (Desarrollo Frontend II
 - React Router
 - Tailwind CSS
 - API REST mock con MSW
+
+## Rutas
+
+| Ruta | Pantalla |
+|---|---|
+| `/` | Catálogo con filtro por categoría |
+| `/libros/:bookId` | Detalle del libro |
+| `/carrito` | Carrito |
+| `/quienes-somos`, `/contacto` | Información de la librería |
+| `/gestion-libros/agregar-libro` | Formulario para agregar un libro |
+| `/gestion-libros/inventario-libros` | Tabla de libros con eliminación |
 
 ## Requisitos
 
