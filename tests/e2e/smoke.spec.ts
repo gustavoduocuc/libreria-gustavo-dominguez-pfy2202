@@ -4,7 +4,7 @@ test('home shows the bookstore and its section menu', async ({ page }) => {
   await page.goto('/');
 
   await expect(
-    page.getByRole('link', { name: 'Librería PFY2202' })
+    page.getByRole('link', { name: 'Librería Tinta y Papel' })
   ).toBeVisible();
   await expect(page.getByRole('link', { name: 'Inicio' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Quiénes somos' })).toBeVisible();
