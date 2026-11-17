@@ -1,46 +1,48 @@
-import { delay, http, HttpResponse } from 'msw';
-import { categories } from '../data';
-import { listBooksByCategorySlug } from './catalogQueries';
+import { delay, graphql, http, HttpResponse } from 'msw';
+import { executeOperation } from './backend/graphqlResolvers';
+import { booksByCategoryResponse, categoriesResponse } from './backend/restResponses';
 
 export const categoriesDelayMs = 600;
 export const booksDelayMs = 800;
 
-// Slug reservado para probar el estado de error: solo responde 500 fuera de producción.
-// En desarrollo, abrir /categorias/error-500. En producción es un slug inexistente (404).
-export const simulatedErrorSlug = 'error-500';
+const graphqlDelaysMs = { Books: 500, Book: 300, AddBook: 600, DeleteBook: 500 };
 
-function isSimulatedError(slug) {
-  return process.env.NODE_ENV !== 'production' && slug === simulatedErrorSlug;
+// Fallos simulados (solo fuera de producción): ver restResponses.js y graphqlResolvers.js.
+// REST: abrir /categorias/error-500. GraphQL: localStorage.mockFailOperation = 'Books' | 'Book' |
+// 'AddBook' | 'DeleteBook', o el título "error-500" al agregar un libro.
+
+function respondWith(response) {
+  return HttpResponse.json(response.body, { status: response.status });
 }
 
 function listCategories() {
   return delay(categoriesDelayMs).then(function respond() {
-    return HttpResponse.json(categories);
+    return respondWith(categoriesResponse());
   });
 }
 
 function listBooks(info) {
   const slug = new URL(info.request.url).searchParams.get('category');
-
   return delay(booksDelayMs).then(function respond() {
-    if (!slug) {
-      return HttpResponse.json({ message: 'Falta el parámetro category.' }, { status: 400 });
-    }
-    if (isSimulatedError(slug)) {
-      return HttpResponse.json({ message: 'Error simulado del servidor.' }, { status: 500 });
-    }
-    const books = listBooksByCategorySlug(slug);
-    if (books === null) {
-      return HttpResponse.json(
-        { message: `La categoría «${slug}» no existe.` },
-        { status: 404 }
-      );
-    }
-    return HttpResponse.json(books);
+    return respondWith(booksByCategoryResponse(slug));
   });
+}
+
+const api = graphql.link('/graphql');
+
+function resolveOperation(operationName) {
+  return function resolve(info) {
+    return delay(graphqlDelaysMs[operationName]).then(function respond() {
+      return HttpResponse.json(executeOperation(operationName, info.variables));
+    });
+  };
 }
 
 export const handlers = [
   http.get('/api/categories', listCategories),
   http.get('/api/books', listBooks),
+  api.query('Books', resolveOperation('Books')),
+  api.query('Book', resolveOperation('Book')),
+  api.mutation('AddBook', resolveOperation('AddBook')),
+  api.mutation('DeleteBook', resolveOperation('DeleteBook')),
 ];
