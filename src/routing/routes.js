@@ -8,6 +8,8 @@ import { AddBookPage } from '../books/AddBookPage/AddBookPage';
 import { BookDetailPage } from '../books/BookDetailPage/BookDetailPage';
 import { BookInventoryPage } from '../books/BookInventoryPage/BookInventoryPage';
 import { CartPage } from '../cart/CartPage/CartPage';
+import { CategoriesPage } from '../categories/CategoriesPage/CategoriesPage';
+import { CategoryBooksPage } from '../categories/CategoryBooksPage/CategoryBooksPage';
 import { ContactPage } from '../contact/ContactPage/ContactPage';
 import { bookstoreProfile } from '../content/bookstoreProfile';
 import { HomePage } from '../home/HomePage/HomePage';
@@ -50,6 +52,8 @@ export const routes = [
         ],
       },
       { path: 'libros/:bookId', Component: BookDetailPage },
+      { path: 'categorias', Component: CategoriesPage },
+      { path: 'categorias/:slug', Component: CategoryBooksPage },
       { path: 'carrito', Component: CartPage },
       { path: '*', Component: NotFoundPage },
     ],

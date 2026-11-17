@@ -23,6 +23,8 @@ test('route table exposes the shell sections', () => {
     'contacto',
     'gestion-libros',
     'libros/:bookId',
+    'categorias',
+    'categorias/:slug',
     'carrito',
     '*',
   ]);
@@ -305,4 +307,13 @@ test('removing a book drops it from the table and from home', async () => {
   expect(await screen.findByRole('link', { name: 'Dune' })).toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Matilda' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: /Eliminar/ })).not.toBeInTheDocument();
+});
+
+test('home links to the categories page', async () => {
+  renderAt('/');
+
+  expect(await screen.findByRole('link', { name: 'Explorar por categorías' })).toHaveAttribute(
+    'href',
+    '/categorias'
+  );
 });
