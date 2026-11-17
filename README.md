@@ -1,6 +1,6 @@
 # Librería Tinta y Papel
 
-Tienda de libros desarrollada para la asignatura PFY2202 (Desarrollo Frontend II). Muestra un catálogo de libros por categoría, el detalle de cada libro, un carrito y la gestión del inventario. Los datos viven en memoria y se reinician al recargar.
+Tienda de libros. Muestra un catálogo de libros por categoría, el detalle de cada libro, un carrito y la gestión del inventario. Los datos viven en memoria y se reinician al recargar.
 
 ## Stack
 
